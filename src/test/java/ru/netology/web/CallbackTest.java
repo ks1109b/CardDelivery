@@ -93,7 +93,8 @@ public class CallbackTest {
 
     @Test
     void shouldGetErrorIfOnlyAgreement() {
-        $("[data-test-id=agreement] span").click();
+        $("[data-test-id=city] input").click();
+        $("[data-test-id=agreement]").click();
         $(withText("Забронировать")).click();
         $("[data-test-id=city].input_invalid .input__sub")
                 .shouldHave(text("Поле обязательно для заполнения"));
