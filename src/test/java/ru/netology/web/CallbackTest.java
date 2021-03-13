@@ -167,7 +167,7 @@ public class CallbackTest {
         $("[data-test-id=agreement]").click();
         $(withText("Забронировать")).click();
         $("[data-test-id=name].input_invalid .input__sub")
-                .shouldHave(text("Имя и Фамилия указаные неверно"));
+                .shouldHave(text("Имя и Фамилия указаны неверно"));
     }
 
     @Test
