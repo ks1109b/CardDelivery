@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CallbackTest {
 
@@ -26,20 +27,23 @@ public class CallbackTest {
 
     @Test
     void shouldSendForm() {
-        $("[data-test-id=city] input").setValue("Москва");
-        $("[data-test-id=date] input").setValue(plusDays(5));
-        $("[data-test-id=name] input").setValue("Василий Иванов-Петров");
-        $("[data-test-id=phone] input").setValue("+79270000000");
+        String date = plusDays(5);
+        $("[data-test-id=city] input").val("Москва");
+        $("[data-test-id=date] input").val(date);
+        $("[data-test-id=name] input").val("Василий Иванов-Петров");
+        $("[data-test-id=phone] input").val("+79270000000");
         $("[data-test-id=agreement]").click();
         $(withText("Забронировать")).click();
         $("[data-test-id=notification]")
-                .shouldBe((visible), Duration.ofSeconds(11));
-        $("[class=notification__title]")
+                .shouldBe((visible), Duration.ofSeconds(11))
                 .shouldHave(text("Успешно!"), Duration.ofSeconds(5));
+        String text = $("[data-test-id='notification'] .notification__content").text();
+        assertEquals("Встреча успешно забронирована на " + date, text);
     }
 
     @Test
     void shouldSendFormWithCityFromList() {
+        String date = plusDays(5);
         $("[data-test-id=city] input").setValue("Мо");
         $(withText("Москва")).click();
         $("[data-test-id=date] input").setValue(plusDays(5));
@@ -50,6 +54,8 @@ public class CallbackTest {
         $("[data-test-id=notification]")
                 .shouldBe((visible), Duration.ofSeconds(11))
                 .shouldHave(text("Успешно!"), Duration.ofSeconds(5));
+        String text = $("[data-test-id='notification'] .notification__content").text();
+        assertEquals("Встреча успешно забронирована на " + date, text);
     }
 
     @Test
